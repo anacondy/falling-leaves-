@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated UI Concept</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="ui-container" id="ui-container">
+
+        <div class="slideshow-background" id="slideshow">
+            <div class="slide" style="background-image: url('https://source.unsplash.com/1600x900/?nature,forest')"></div>
+            <div class="slide" style="background-image: url('https://source.unsplash.com/1600x900/?orchestra,violin')"></div>
+            <div class="slide" style="background-image: url('https://source.unsplash.com/1600x900/?city,night')"></div>
+            <div class="slide" style="background-image: url('https://source.unsplash.com/1600x900/?technology,code')"></div>
+        </div>
+
+        <div class="falling-elements">
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+        </div>
+
+        <div class="content-overlay">
+            
+            <ul class="menu-list" id="menu">
+                <li data-slide="0">Nature</li>
+                <li data-slide="1">Orchestra</li>
+                <li data-slide="2">Metropolis</li>
+                <li data-slide="3">Digital</li>
+            </ul>
+
+            <div class="play-button" id="play-button">
+                <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
