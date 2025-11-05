@@ -1,8 +1,6 @@
 # 🎵 Music & Visual Experience
 **SITE LINK:** https://anacondy.github.io/falling-leaves-/
 
-**Live Demo:** [https://github.com/anacondy/falling-leaves-](https://github.com/anacondy/falling-leaves-)
-
 An immersive audio-visual web application featuring YouTube music integration, dynamic background slideshows, authenticated settings page, customizable menu text, Google Photos & Pinterest integration, and beautiful falling leaves animation with enhanced dial/crown menu animations.
 
 ![Main Interface](https://github.com/user-attachments/assets/8ccd63bd-b955-498a-b242-4d4db4352ebd)
@@ -153,10 +151,12 @@ Contributions are welcome! Please maintain the vanilla JS approach and update do
 
 ## 👤 Author
 
-**anacondy**
+*"In the darkness of uncertainty, in the light of creativity, we find truth."*
+
+**Puppy pilot & anacondy**
 - GitHub: [@anacondy](https://github.com/anacondy)
 - Repository: [falling-leaves-](https://github.com/anacondy/falling-leaves-)
 
 ---
 
-Made with ❤️ and JavaScript by [@anacondy](https://github.com/anacondy)
+*Crafted with passion and pixels*
