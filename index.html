@@ -245,7 +245,7 @@
         .menu-container {
             position: relative;
             height: 60vh;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .menu-list {
@@ -753,6 +753,10 @@
 
             function loadGooglePhotosImages(albumUrl) {
                 // Mock Google Photos implementation with metadata
+                console.log('Google Photos URL provided:', albumUrl);
+                console.log('Note: Full Google Photos API integration requires OAuth authentication.');
+                console.log('Currently displaying local images with Google Photos-style metadata.');
+                
                 imageData = config.defaultImages.map((img, index) => ({
                     url: img,
                     title: `Photo ${index + 1}`,
