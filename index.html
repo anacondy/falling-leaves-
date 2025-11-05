@@ -10,9 +10,9 @@
             height: 100%;
             margin: 0;
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background-color: #111; /* Dark background */
+            background-color: #111;
             color: #fff;
-            overflow: hidden; /* Prevents scrollbars */
+            overflow: hidden;
         }
 
         /* --- Main Container --- */
@@ -20,6 +20,106 @@
             position: relative;
             height: 100vh;
             width: 100vw;
+        }
+
+        /* --- Authentication Modal --- */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-content {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .auth-content h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.8rem;
+            font-weight: 300;
+        }
+
+        .auth-content p {
+            margin: 0 0 30px 0;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .code-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .code-digit {
+            width: 50px;
+            height: 60px;
+            font-size: 2rem;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .code-digit:focus {
+            border-color: rgba(76, 175, 80, 0.7);
+            outline: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .auth-buttons button {
+            padding: 12px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-buttons button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .auth-buttons button.submit {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        .auth-error {
+            color: #f44336;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .auth-error.active {
+            display: block;
         }
 
         /* --- 1. Slideshow Background --- */
@@ -39,24 +139,20 @@
             background-size: cover;
             background-position: center;
             opacity: 0;
-            /* This is the smooth fade transition */
             transition: opacity 2.0s ease-in-out;
-            /* A subtle zoom effect on the image */
             transform: scale(1.1);
             animation: kenburns 20s infinite;
         }
 
         .slide.active {
-            opacity: 1; /* Makes the active slide visible */
+            opacity: 1;
         }
 
-        /* Stagger animation start times for a more natural feel */
         .slide:nth-child(1) { animation-name: kenburns-1; }
         .slide:nth-child(2) { animation-name: kenburns-2; }
         .slide:nth-child(3) { animation-name: kenburns-3; }
         .slide:nth-child(4) { animation-name: kenburns-4; }
 
-        /* Keyframes for the subtle zoom/pan (Ken Burns effect) */
         @keyframes kenburns-1 {
             0%, 100% { transform: scale(1.1) translate(0, 0); }
             50% { transform: scale(1.0) translate(-5px, 5px); }
@@ -74,8 +170,7 @@
             50% { transform: scale(1.0) translate(0, 0); }
         }
 
-
-        /* --- 2. Content Overlay (Menu & Button) --- */
+        /* --- 2. Content Overlay --- */
         .content-overlay {
             position: relative;
             z-index: 10;
@@ -84,33 +179,44 @@
             display: flex;
             align-items: center;
             padding: 0 5vw;
-            /* Adds a very subtle dark gradient so text is more readable */
             background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 60%);
         }
 
-        /* --- 3. Vertical Menu List --- */
+        /* --- 3. Vertical Menu List with Crown/Dial Animation --- */
+        .menu-container {
+            position: relative;
+            height: 60vh;
+            overflow: hidden;
+        }
+
         .menu-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            position: relative;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .menu-list li {
-            font-size: 2rem; /* Large, readable text */
+            font-size: 2rem;
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.6); /* Non-active items are dimmed */
+            color: rgba(255, 255, 255, 0.4);
             margin: 25px 0;
             cursor: pointer;
-            
-            /* This is the smooth transition for the "up & down" / "in & out" effect */
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            white-space: nowrap;
         }
 
         .menu-list li.active {
-            color: #ffffff; /* Active item is bright white */
+            color: #ffffff;
             font-weight: 600;
-            /* This creates the "pop out" and "move" effect */
-            transform: scale(1.2) translateX(30px);
+            transform: scale(1.3) translateX(40px);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .menu-list li.adjacent {
+            color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.1) translateX(20px);
         }
 
         /* --- 4. Play/Pause Button --- */
@@ -127,7 +233,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px); /* Frosted glass effect */
+            backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
 
@@ -136,7 +242,6 @@
             transform: scale(1.1);
         }
 
-        /* SVG icons for play and pause */
         .play-button .icon-play,
         .play-button .icon-pause {
             fill: #fff;
@@ -145,10 +250,9 @@
         }
 
         .play-button .icon-pause {
-            display: none; /* Hide pause icon by default */
+            display: none;
         }
 
-        /* When paused, hide play and show pause */
         .ui-container.paused .icon-play {
             display: none;
         }
@@ -164,38 +268,35 @@
             width: 100%;
             height: 100%;
             z-index: 5;
-            pointer-events: none; /* Allows clicks to go through */
+            pointer-events: none;
             transition: opacity 0.5s ease;
         }
 
         .falling-elements.hidden {
             opacity: 0;
-            pointer-events: none;
         }
 
         .leaf {
             position: absolute;
-            top: -20px; /* Start off-screen */
+            top: -20px;
             width: 15px;
             height: 15px;
-            background-color: rgba(255, 255, 255, 0.2); /* Ghostly white leaves */
+            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 0% 50% 0% 50%;
             animation: fall linear infinite;
         }
 
-        /* Keyframes for falling */
         @keyframes fall {
             0% {
                 transform: translateY(0) rotate(0deg);
                 opacity: 1;
             }
             100% {
-                transform: translateY(105vh) rotate(720deg); /* Fall and spin */
+                transform: translateY(105vh) rotate(720deg);
                 opacity: 0;
             }
         }
 
-        /* Create variations for a random effect */
         .leaf:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
         .leaf:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: -3s; }
         .leaf:nth-child(3) { left: 25%; animation-duration: 18s; animation-delay: -7s; }
@@ -207,79 +308,38 @@
         .leaf:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: -12s; }
         .leaf:nth-child(10) { left: 95%; animation-duration: 17s; animation-delay: -4s; }
 
-        /* --- 6. Settings Panel --- */
-        .settings-panel {
+        /* --- 6. Image Metadata Display --- */
+        .image-info {
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            z-index: 100;
-            max-width: 350px;
-            color: #fff;
-        }
-
-        .settings-panel h3 {
-            margin: 0 0 15px 0;
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .settings-panel input,
-        .settings-panel button,
-        .settings-panel select {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
             font-size: 0.9rem;
+            z-index: 50;
+            max-width: 300px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
         }
 
-        .settings-panel button {
-            background: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .image-info.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .settings-panel button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .image-info .title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
         }
 
-        .settings-panel label {
-            display: block;
-            margin: 12px 0 5px 0;
-            font-size: 0.85rem;
+        .image-info .metadata {
             opacity: 0.8;
-        }
-
-        .status-message {
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 4px;
             font-size: 0.85rem;
-            text-align: center;
-        }
-
-        .status-message.success {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid rgba(76, 175, 80, 0.5);
-        }
-
-        .status-message.error {
-            background: rgba(244, 67, 54, 0.2);
-            border: 1px solid rgba(244, 67, 54, 0.5);
-        }
-
-        .status-message.info {
-            background: rgba(33, 150, 243, 0.2);
-            border: 1px solid rgba(33, 150, 243, 0.5);
+            line-height: 1.5;
         }
 
         /* --- 7. YouTube Player (hidden) --- */
@@ -291,10 +351,10 @@
             pointer-events: none;
         }
 
-        /* --- 8. Keyboard navigation indicator --- */
-        .keyboard-hint {
+        /* --- 8. Settings Hint --- */
+        .settings-hint {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(5px);
@@ -303,14 +363,50 @@
             font-size: 0.8rem;
             opacity: 0.7;
             z-index: 50;
+            transition: all 0.3s ease;
         }
 
+        .settings-hint:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .settings-hint.pressed {
+            background: rgba(76, 175, 80, 0.4);
+            border: 1px solid rgba(76, 175, 80, 0.6);
+        }
+
+        /* Shake animation for error */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
     </style>
 </head>
 <body>
+    <!-- Authentication Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-content">
+            <h2>🔒 Settings Access</h2>
+            <p>Enter the 6-digit access code</p>
+            <div class="code-input-container">
+                <input type="text" class="code-digit" id="digit-0" maxlength="1" pattern="[0-9]">
+                <input type="text" class="code-digit" id="digit-1" maxlength="1" pattern="[0-9]">
+                <input type="text" class="code-digit" id="digit-2" maxlength="1" pattern="[0-9]">
+                <input type="text" class="code-digit" id="digit-3" maxlength="1" pattern="[0-9]">
+                <input type="text" class="code-digit" id="digit-4" maxlength="1" pattern="[0-9]">
+                <input type="text" class="code-digit" id="digit-5" maxlength="1" pattern="[0-9]">
+            </div>
+            <div class="auth-buttons">
+                <button class="cancel" id="auth-cancel">Cancel</button>
+                <button class="submit" id="auth-submit">Submit</button>
+            </div>
+            <div class="auth-error" id="auth-error">Incorrect code. Please try again.</div>
+        </div>
+    </div>
 
     <div class="ui-container" id="ui-container">
-
         <!-- Hidden YouTube Player -->
         <div id="youtube-player-container">
             <div id="youtube-player"></div>
@@ -334,194 +430,336 @@
         </div>
 
         <div class="content-overlay">
-            
-            <ul class="menu-list" id="menu">
-                <li data-slide="0">Internet</li>
-                <li data-slide="1">Schedule</li>
-                <li data-slide="2">Restaurants</li>
-                <li data-slide="3">Decibels</li>
-                <li data-slide="4">Coffees</li>
-                <li data-slide="5">Jobs</li>
-                <li data-slide="6">Cars</li>
-                <li data-slide="7">Emails</li>
-                <li data-slide="8">Parties</li>
-                <li data-slide="9">Nature</li>
-            </ul>
+            <div class="menu-container">
+                <ul class="menu-list" id="menu">
+                    <!-- Menu items will be dynamically added here -->
+                </ul>
+            </div>
 
             <div class="play-button" id="play-button">
                 <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
                 <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
             </div>
-
         </div>
 
-        <!-- Settings Panel -->
-        <div class="settings-panel">
-            <h3>🎵 Music & Visual Settings</h3>
-            
-            <label for="youtube-url">YouTube Music URL or Video ID:</label>
-            <input type="text" id="youtube-url" placeholder="e.g., dQw4w9WgXcQ or full URL">
-            <button id="load-youtube">Load Music</button>
-
-            <label for="pinterest-url">Pinterest Board URL (optional):</label>
-            <input type="text" id="pinterest-url" placeholder="e.g., https://pinterest.com/username/board/">
-            <button id="load-pinterest">Load Pinterest Images</button>
-
-            <label for="slide-interval">Slideshow Interval (seconds):</label>
-            <select id="slide-interval">
-                <option value="3">3 seconds</option>
-                <option value="5" selected>5 seconds</option>
-                <option value="8">8 seconds</option>
-                <option value="10">10 seconds</option>
-                <option value="15">15 seconds</option>
-            </select>
-
-            <div id="status-message" class="status-message" style="display: none;"></div>
+        <!-- Image Metadata Display -->
+        <div class="image-info" id="image-info">
+            <div class="title" id="image-title"></div>
+            <div class="metadata" id="image-metadata"></div>
         </div>
 
-        <!-- Keyboard Hint -->
-        <div class="keyboard-hint">
-            ⌨️ Use ↑↓ arrow keys to navigate menu
+        <!-- Settings Hint -->
+        <div class="settings-hint" id="settings-hint">
+            ⚙️ Hold F+S for 2 sec for Settings
         </div>
     </div>
 
     <script>
         // ========================================
-        // MUSIC & VISUAL EXPERIENCE - Main Script
+        // MUSIC & VISUAL EXPERIENCE - Enhanced Main Script
         // ========================================
 
-        // Wait for the document to be fully loaded
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- Configuration ---
             const config = {
                 defaultImages: [
-                    'Choose nature - Typography Poster.jpeg',
-                    'Screenshot (490).png'
+                    '025bef26455d0dd81b480740debab6aa.jpg',
+                    '04a84268a49d85a874ec201938bce376.jpg',
+                    '2545264f538bc107dcfad382be919547.jpg',
+                    '2da3e7f38347ce576dbc8cbe7dabf1f1.jpg',
+                    '4259fe8da6b1b37794f619b950cdf7ee.jpg',
+                    '6c00a43d018340664c03707e001d1c80.jpg',
+                    '6f0014fc32a8a639363a5117c846322e.jpg',
+                    '78a6dcf42161f1a006de7a2dedfdf14d.jpg',
+                    '8670bbe9e9db0546ba2d05c636e0e3a7.jpg',
+                    '9fe6ff79da3400899f07358e025752e6.jpg'
                 ],
-                defaultSlideDuration: 5000,
-                youtubeVideoId: null,
-                pinterestImages: []
+                defaultMenuItems: [
+                    'Internet', 'Schedule', 'Restaurants', 'Decibels', 'Coffees',
+                    'Jobs', 'Cars', 'Emails', 'Parties', 'Nature'
+                ],
+                accessCode: '123456', // Default access code
+                defaultSlideDuration: 5000
             };
 
-            // --- Get all our HTML elements ---
+            // --- Get HTML elements ---
             const container = document.getElementById('ui-container');
             const slideshowContainer = document.getElementById('slideshow');
-            const menuItems = document.querySelectorAll('.menu-list li');
+            const menuList = document.getElementById('menu');
             const playButton = document.getElementById('play-button');
             const fallingElements = document.querySelector('.falling-elements');
-            const youtubeUrlInput = document.getElementById('youtube-url');
-            const loadYoutubeBtn = document.getElementById('load-youtube');
-            const pinterestUrlInput = document.getElementById('pinterest-url');
-            const loadPinterestBtn = document.getElementById('load-pinterest');
-            const slideIntervalSelect = document.getElementById('slide-interval');
-            const statusMessage = document.getElementById('status-message');
+            const imageInfo = document.getElementById('image-info');
+            const imageTitle = document.getElementById('image-title');
+            const imageMetadata = document.getElementById('image-metadata');
+            const settingsHint = document.getElementById('settings-hint');
+            const authModal = document.getElementById('auth-modal');
+            const authError = document.getElementById('auth-error');
             
             // --- Variables ---
             let currentSlide = 0;
             let isPlaying = true;
             let slideInterval;
             let slideDuration = config.defaultSlideDuration;
-            let player = null; // YouTube player instance
+            let player = null;
             let slides = [];
-            let usingPinterest = false;
+            let menuItems = [];
+            let imageData = [];
             let youtubeAPIReady = false;
 
-            // ========================================
-            // YouTube IFrame API Integration
-            // ========================================
-            
-            // Load YouTube IFrame API
-            const tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            // --- F+S Key combination tracking ---
+            let keysPressed = { f: false, s: false };
+            let keyHoldTimer = null;
 
-            // YouTube API Ready Callback (global function required by YouTube API)
-            window.onYouTubeIframeAPIReady = function() {
-                console.log('YouTube IFrame API ready');
-                youtubeAPIReady = true;
-                showStatus('YouTube API loaded successfully!', 'success');
-            };
+            // ========================================
+            // Settings and Authentication
+            // ========================================
 
-            function loadYouTubeVideo(videoId) {
-                if (!youtubeAPIReady) {
-                    showStatus('YouTube API is still loading, please wait a moment...', 'info');
-                    // Retry after a delay
-                    setTimeout(() => {
-                        if (youtubeAPIReady) {
-                            loadYouTubeVideo(videoId);
-                        } else {
-                            showStatus('YouTube API failed to load. Please refresh the page.', 'error');
-                        }
-                    }, 2000);
-                    return;
+            function loadSettings() {
+                return {
+                    youtubeUrl: localStorage.getItem('youtubeUrl') || '',
+                    slideInterval: parseInt(localStorage.getItem('slideInterval') || '5'),
+                    imageSource: localStorage.getItem('imageSource') || 'local',
+                    pinterestUrl: localStorage.getItem('pinterestUrl') || '',
+                    googlePhotosUrl: localStorage.getItem('googlePhotosUrl') || '',
+                    menuItems: JSON.parse(localStorage.getItem('menuItems')) || config.defaultMenuItems
+                };
+            }
+
+            function applySettings() {
+                const settings = loadSettings();
+                
+                // Apply slideshow interval
+                slideDuration = settings.slideInterval * 1000;
+                
+                // Initialize menu with custom labels
+                initializeMenu(settings.menuItems);
+                
+                // Load images based on source
+                if (settings.imageSource === 'google-photos' && settings.googlePhotosUrl) {
+                    loadGooglePhotosImages(settings.googlePhotosUrl);
+                } else if (settings.imageSource === 'pinterest' && settings.pinterestUrl) {
+                    loadPinterestImages(settings.pinterestUrl);
+                } else {
+                    loadLocalImages();
                 }
 
-                if (player) {
-                    player.loadVideoById(videoId);
-                    showStatus('Music loaded successfully!', 'success');
-                } else {
-                    try {
-                        player = new YT.Player('youtube-player', {
-                            height: '1',
-                            width: '1',
-                            videoId: videoId,
-                            playerVars: {
-                                'autoplay': 0,
-                                'controls': 0,
-                                'disablekb': 1,
-                                'fs': 0,
-                                'modestbranding': 1,
-                                'playsinline': 1,
-                                'rel': 0
-                            },
-                            events: {
-                                'onReady': onPlayerReady,
-                                'onStateChange': onPlayerStateChange
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Error creating YouTube player:', error);
-                        showStatus('Error loading YouTube player. Please try again.', 'error');
+                // Load YouTube if configured
+                if (settings.youtubeUrl && youtubeAPIReady) {
+                    const videoId = extractVideoId(settings.youtubeUrl);
+                    if (videoId) {
+                        setTimeout(() => loadYouTubeVideo(videoId), 1000);
                     }
                 }
-                config.youtubeVideoId = videoId;
             }
 
-            function onPlayerReady(event) {
-                console.log('YouTube player ready');
-                showStatus('Music player ready! Click play to start.', 'success');
-            }
+            // Handle F+S key combination
+            document.addEventListener('keydown', (e) => {
+                const key = e.key.toLowerCase();
+                
+                if (key === 'f' || key === 's') {
+                    keysPressed[key] = true;
+                    settingsHint.classList.add('pressed');
+                    
+                    // Both keys pressed, start timer
+                    if (keysPressed.f && keysPressed.s && !keyHoldTimer) {
+                        keyHoldTimer = setTimeout(() => {
+                            showAuthModal();
+                        }, 2000);
+                    }
+                }
 
-            function onPlayerStateChange(event) {
-                if (event.data == YT.PlayerState.PLAYING) {
-                    container.classList.add('paused'); // Shows pause icon
-                    isPlaying = true;
-                    if (!slideInterval) {
+                // Arrow key navigation
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    previousSlide();
+                    if (isPlaying && slideInterval) {
+                        clearInterval(slideInterval);
                         startSlideshow();
                     }
-                } else if (event.data == YT.PlayerState.PAUSED) {
-                    container.classList.remove('paused'); // Shows play icon
-                    isPlaying = false;
-                } else if (event.data == YT.PlayerState.ENDED) {
-                    container.classList.remove('paused');
-                    isPlaying = false;
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    nextSlide();
+                    if (isPlaying && slideInterval) {
+                        clearInterval(slideInterval);
+                        startSlideshow();
+                    }
                 }
+            });
+
+            document.addEventListener('keyup', (e) => {
+                const key = e.key.toLowerCase();
+                
+                if (key === 'f' || key === 's') {
+                    keysPressed[key] = false;
+                    settingsHint.classList.remove('pressed');
+                    
+                    // Clear timer if either key is released
+                    if (keyHoldTimer) {
+                        clearTimeout(keyHoldTimer);
+                        keyHoldTimer = null;
+                    }
+                }
+            });
+
+            function showAuthModal() {
+                authModal.classList.add('active');
+                authError.classList.remove('active');
+                
+                // Clear all inputs
+                for (let i = 0; i < 6; i++) {
+                    document.getElementById(`digit-${i}`).value = '';
+                }
+                
+                // Focus first input
+                document.getElementById('digit-0').focus();
+            }
+
+            function hideAuthModal() {
+                authModal.classList.remove('active');
+                authError.classList.remove('active');
+            }
+
+            // Setup code input auto-advance
+            for (let i = 0; i < 6; i++) {
+                const input = document.getElementById(`digit-${i}`);
+                
+                input.addEventListener('input', (e) => {
+                    // Only allow numbers
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    
+                    // Auto-advance to next input
+                    if (e.target.value.length === 1 && i < 5) {
+                        document.getElementById(`digit-${i + 1}`).focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    // Handle backspace
+                    if (e.key === 'Backspace' && !e.target.value && i > 0) {
+                        document.getElementById(`digit-${i - 1}`).focus();
+                    }
+                });
+            }
+
+            document.getElementById('auth-submit').addEventListener('click', () => {
+                let code = '';
+                for (let i = 0; i < 6; i++) {
+                    code += document.getElementById(`digit-${i}`).value;
+                }
+                
+                if (code === config.accessCode) {
+                    hideAuthModal();
+                    window.location.href = 'settings.html';
+                } else {
+                    authError.classList.add('active');
+                    // Shake animation
+                    authModal.querySelector('.auth-content').style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        authModal.querySelector('.auth-content').style.animation = '';
+                    }, 500);
+                }
+            });
+
+            document.getElementById('auth-cancel').addEventListener('click', hideAuthModal);
+
+            // ========================================
+            // Image Loading Functions
+            // ========================================
+
+            function loadLocalImages() {
+                imageData = config.defaultImages.map((img, index) => ({
+                    url: img,
+                    title: `Image ${index + 1}`,
+                    metadata: img,
+                    source: 'local'
+                }));
+                initializeSlides(imageData);
+            }
+
+            function loadPinterestImages(boardUrl) {
+                // Mock Pinterest implementation
+                imageData = config.defaultImages.map((img, index) => ({
+                    url: img,
+                    title: `Pinterest Pin ${index + 1}`,
+                    metadata: `Board: ${boardUrl.split('/').pop() || 'Unknown'}`,
+                    source: 'pinterest'
+                }));
+                
+                fallingElements.classList.add('hidden');
+                initializeSlides(imageData);
+            }
+
+            function loadGooglePhotosImages(albumUrl) {
+                // Mock Google Photos implementation with metadata
+                imageData = config.defaultImages.map((img, index) => ({
+                    url: img,
+                    title: `Photo ${index + 1}`,
+                    metadata: `Date: ${new Date().toLocaleDateString()}\nLocation: Unknown\nNo comments`,
+                    source: 'google-photos'
+                }));
+                
+                fallingElements.classList.add('hidden');
+                initializeSlides(imageData);
+            }
+
+            // ========================================
+            // Menu Management
+            // ========================================
+
+            function initializeMenu(menuItemLabels) {
+                menuList.innerHTML = '';
+                menuItems = [];
+                
+                menuItemLabels.forEach((label, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = label;
+                    li.dataset.slide = index;
+                    
+                    li.addEventListener('click', () => {
+                        showSlide(index);
+                        if (isPlaying && slideInterval) {
+                            clearInterval(slideInterval);
+                            startSlideshow();
+                        }
+                    });
+                    
+                    menuList.appendChild(li);
+                    menuItems.push(li);
+                });
+            }
+
+            function updateMenuAnimation() {
+                menuItems.forEach((item, index) => {
+                    item.classList.remove('active', 'adjacent');
+                    
+                    if (index === currentSlide) {
+                        item.classList.add('active');
+                    } else if (
+                        index === (currentSlide - 1 + menuItems.length) % menuItems.length ||
+                        index === (currentSlide + 1) % menuItems.length
+                    ) {
+                        item.classList.add('adjacent');
+                    }
+                });
+
+                // Calculate vertical offset for crown/dial effect
+                const offset = currentSlide * -75; // 75px per item (25px margin + 50px approx height)
+                menuList.style.transform = `translateY(${offset}px)`;
             }
 
             // ========================================
             // Slideshow Management
             // ========================================
 
-            function initializeSlides(images) {
+            function initializeSlides(data) {
                 slideshowContainer.innerHTML = '';
                 slides = [];
                 
-                images.forEach((imageSrc, index) => {
+                data.forEach((item, index) => {
                     const slideDiv = document.createElement('div');
                     slideDiv.className = 'slide';
-                    slideDiv.style.backgroundImage = `url('${imageSrc}')`;
+                    slideDiv.style.backgroundImage = `url('${item.url}')`;
                     slideshowContainer.appendChild(slideDiv);
                     slides.push(slideDiv);
                 });
@@ -529,33 +767,26 @@
                 currentSlide = 0;
                 if (slides.length > 0) {
                     slides[0].classList.add('active');
-                    if (menuItems[0]) {
-                        menuItems[0].classList.add('active');
-                    }
+                    updateMenuAnimation();
+                    updateImageInfo();
                 }
             }
 
             function showSlide(index) {
                 if (slides.length === 0) return;
                 
-                // Remove 'active' class from current slide and menu item
                 if (slides[currentSlide]) {
                     slides[currentSlide].classList.remove('active');
                 }
-                if (menuItems[currentSlide]) {
-                    menuItems[currentSlide].classList.remove('active');
-                }
                 
-                // Update the currentSlide index
                 currentSlide = index % slides.length;
                 
-                // Add 'active' class to new slide and menu item
                 if (slides[currentSlide]) {
                     slides[currentSlide].classList.add('active');
                 }
-                if (menuItems[currentSlide]) {
-                    menuItems[currentSlide].classList.add('active');
-                }
+                
+                updateMenuAnimation();
+                updateImageInfo();
             }
 
             function nextSlide() {
@@ -584,154 +815,79 @@
                 container.classList.add('paused');
             }
 
-            // ========================================
-            // Pinterest Integration (Mock/Demo)
-            // ========================================
-
-            function loadPinterestImages(boardUrl) {
-                // Note: Real Pinterest API requires OAuth authentication
-                // This is a demo implementation that shows how it would work
-                showStatus('Pinterest integration requires API authentication. Using local demo images instead.', 'info');
-                
-                // Use local images for demo - reference config for consistency
-                const demoImages = [...config.defaultImages];
-
-                config.pinterestImages = demoImages;
-                usingPinterest = true;
-                
-                // Hide falling leaves when using Pinterest
-                if (fallingElements) {
-                    fallingElements.classList.add('hidden');
+            function updateImageInfo() {
+                if (imageData.length > 0 && imageData[currentSlide]) {
+                    const data = imageData[currentSlide];
+                    imageTitle.textContent = data.title;
+                    imageMetadata.textContent = data.metadata;
+                    imageInfo.classList.add('visible');
+                } else {
+                    imageInfo.classList.remove('visible');
                 }
-
-                initializeSlides(demoImages);
-                startSlideshow();
-                
-                setTimeout(() => {
-                    showStatus('Demo images loaded! Real Pinterest API would load board images here.', 'success');
-                }, 500);
             }
 
             // ========================================
-            // Keyboard Navigation
+            // YouTube Integration
             // ========================================
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    previousSlide();
-                    
-                    // Reset timer if playing
-                    if (isPlaying && slideInterval) {
-                        clearInterval(slideInterval);
-                        startSlideshow();
-                    }
-                } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    nextSlide();
-                    
-                    // Reset timer if playing
-                    if (isPlaying && slideInterval) {
-                        clearInterval(slideInterval);
-                        startSlideshow();
-                    }
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            window.onYouTubeIframeAPIReady = function() {
+                console.log('YouTube IFrame API ready');
+                youtubeAPIReady = true;
+                applySettings();
+            };
+
+            function loadYouTubeVideo(videoId) {
+                if (!youtubeAPIReady) {
+                    setTimeout(() => loadYouTubeVideo(videoId), 1000);
+                    return;
                 }
-            });
 
-            // ========================================
-            // Event Listeners
-            // ========================================
-
-            // Play/Pause Button Click
-            playButton.addEventListener('click', () => {
-                if (player && config.youtubeVideoId && youtubeAPIReady) {
-                    // YouTube player exists
-                    try {
-                        const playerState = player.getPlayerState();
-                        if (playerState === YT.PlayerState.PLAYING || playerState === 1) {
-                            player.pauseVideo();
-                            stopSlideshow();
-                        } else {
-                            player.playVideo();
-                            startSlideshow();
-                        }
-                    } catch (error) {
-                        console.error('Error controlling YouTube player:', error);
-                        // Fallback to just slideshow control
-                        if (isPlaying) {
-                            stopSlideshow();
-                        } else {
-                            startSlideshow();
-                        }
-                    }
+                if (player) {
+                    player.loadVideoById(videoId);
                 } else {
-                    // No YouTube player, just toggle slideshow
-                    if (isPlaying) {
-                        stopSlideshow();
-                    } else {
-                        startSlideshow();
+                    try {
+                        player = new YT.Player('youtube-player', {
+                            height: '1',
+                            width: '1',
+                            videoId: videoId,
+                            playerVars: {
+                                'autoplay': 0,
+                                'controls': 0,
+                                'disablekb': 1,
+                                'fs': 0,
+                                'modestbranding': 1,
+                                'playsinline': 1,
+                                'rel': 0
+                            },
+                            events: {
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error creating YouTube player:', error);
                     }
                 }
-            });
+            }
 
-            // Menu Item Clicks
-            menuItems.forEach((item, index) => {
-                item.addEventListener('click', () => {
-                    showSlide(index);
-                    
-                    // Reset timer if playing
-                    if (isPlaying && slideInterval) {
-                        clearInterval(slideInterval);
+            function onPlayerStateChange(event) {
+                if (event.data == YT.PlayerState.PLAYING) {
+                    container.classList.add('paused');
+                    isPlaying = true;
+                    if (!slideInterval) {
                         startSlideshow();
                     }
-                });
-            });
-
-            // YouTube Load Button
-            loadYoutubeBtn.addEventListener('click', () => {
-                const input = youtubeUrlInput.value.trim();
-                if (!input) {
-                    showStatus('Please enter a YouTube URL or Video ID', 'error');
-                    return;
+                } else if (event.data == YT.PlayerState.PAUSED) {
+                    container.classList.remove('paused');
+                    isPlaying = false;
+                } else if (event.data == YT.PlayerState.ENDED) {
+                    container.classList.remove('paused');
+                    isPlaying = false;
                 }
-
-                // Use the extractVideoId function to handle URL parsing
-                const videoId = extractVideoId(input);
-                loadYouTubeVideo(videoId);
-            });
-
-            // Pinterest Load Button
-            loadPinterestBtn.addEventListener('click', () => {
-                const boardUrl = pinterestUrlInput.value.trim();
-                if (!boardUrl) {
-                    showStatus('Please enter a Pinterest board URL', 'error');
-                    return;
-                }
-                loadPinterestImages(boardUrl);
-            });
-
-            // Slide Interval Change
-            slideIntervalSelect.addEventListener('change', (e) => {
-                slideDuration = parseInt(e.target.value) * 1000;
-                if (isPlaying) {
-                    clearInterval(slideInterval);
-                    startSlideshow();
-                }
-                showStatus(`Slideshow interval set to ${e.target.value} seconds`, 'success');
-            });
-
-            // ========================================
-            // Helper Functions
-            // ========================================
-
-            function showStatus(message, type = 'info') {
-                statusMessage.textContent = message;
-                statusMessage.className = `status-message ${type}`;
-                statusMessage.style.display = 'block';
-                
-                setTimeout(() => {
-                    statusMessage.style.display = 'none';
-                }, 4000);
             }
 
             function extractVideoId(url) {
@@ -746,24 +902,53 @@
                     if (match) return match[1];
                 }
                 
-                return url; // Assume it's already a video ID
+                return url;
             }
+
+            // ========================================
+            // Event Listeners
+            // ========================================
+
+            playButton.addEventListener('click', () => {
+                if (player && youtubeAPIReady) {
+                    try {
+                        const playerState = player.getPlayerState();
+                        if (playerState === YT.PlayerState.PLAYING || playerState === 1) {
+                            player.pauseVideo();
+                            stopSlideshow();
+                        } else {
+                            player.playVideo();
+                            startSlideshow();
+                        }
+                    } catch (error) {
+                        console.error('Error controlling YouTube player:', error);
+                        if (isPlaying) {
+                            stopSlideshow();
+                        } else {
+                            startSlideshow();
+                        }
+                    }
+                } else {
+                    if (isPlaying) {
+                        stopSlideshow();
+                    } else {
+                        startSlideshow();
+                    }
+                }
+            });
 
             // ========================================
             // Initialize
             // ========================================
 
-            // Initialize with default images
-            initializeSlides(config.defaultImages);
-            showSlide(0);
-            startSlideshow();
-
-            // Show falling leaves by default (no Pinterest)
-            if (fallingElements) {
-                fallingElements.classList.remove('hidden');
+            // Check if YouTube API is ready, if not, apply settings anyway
+            if (!youtubeAPIReady) {
+                setTimeout(applySettings, 100);
             }
-
-            console.log('Music & Visual Experience initialized!');
+            
+            startSlideshow();
+            
+            console.log('Music & Visual Experience Enhanced initialized!');
         });
     </script>
 </body>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music & Visual Experience</title>
+    <style>
+        /* --- Base Setup --- */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #111; /* Dark background */
+            color: #fff;
+            overflow: hidden; /* Prevents scrollbars */
+        }
+
+        /* --- Main Container --- */
+        .ui-container {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* --- 1. Slideshow Background --- */
+        .slideshow-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            /* This is the smooth fade transition */
+            transition: opacity 2.0s ease-in-out;
+            /* A subtle zoom effect on the image */
+            transform: scale(1.1);
+            animation: kenburns 20s infinite;
+        }
+
+        .slide.active {
+            opacity: 1; /* Makes the active slide visible */
+        }
+
+        /* Stagger animation start times for a more natural feel */
+        .slide:nth-child(1) { animation-name: kenburns-1; }
+        .slide:nth-child(2) { animation-name: kenburns-2; }
+        .slide:nth-child(3) { animation-name: kenburns-3; }
+        .slide:nth-child(4) { animation-name: kenburns-4; }
+
+        /* Keyframes for the subtle zoom/pan (Ken Burns effect) */
+        @keyframes kenburns-1 {
+            0%, 100% { transform: scale(1.1) translate(0, 0); }
+            50% { transform: scale(1.0) translate(-5px, 5px); }
+        }
+        @keyframes kenburns-2 {
+            0%, 100% { transform: scale(1.1) translate(-5px, 0); }
+            50% { transform: scale(1.0) translate(5px, -5px); }
+        }
+        @keyframes kenburns-3 {
+            0%, 100% { transform: scale(1.1) translate(0, -5px); }
+            50% { transform: scale(1.0) translate(0, 5px); }
+        }
+        @keyframes kenburns-4 {
+            0%, 100% { transform: scale(1.1) translate(5px, 5px); }
+            50% { transform: scale(1.0) translate(0, 0); }
+        }
+
+
+        /* --- 2. Content Overlay (Menu & Button) --- */
+        .content-overlay {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 5vw;
+            /* Adds a very subtle dark gradient so text is more readable */
+            background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 60%);
+        }
+
+        /* --- 3. Vertical Menu List --- */
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-list li {
+            font-size: 2rem; /* Large, readable text */
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6); /* Non-active items are dimmed */
+            margin: 25px 0;
+            cursor: pointer;
+            
+            /* This is the smooth transition for the "up & down" / "in & out" effect */
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .menu-list li.active {
+            color: #ffffff; /* Active item is bright white */
+            font-weight: 600;
+            /* This creates the "pop out" and "move" effect */
+            transform: scale(1.2) translateX(30px);
+        }
+
+        /* --- 4. Play/Pause Button --- */
+        .play-button {
+            position: absolute;
+            bottom: 40px;
+            left: 5vw;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* SVG icons for play and pause */
+        .play-button .icon-play,
+        .play-button .icon-pause {
+            fill: #fff;
+            width: 24px;
+            height: 24px;
+        }
+
+        .play-button .icon-pause {
+            display: none; /* Hide pause icon by default */
+        }
+
+        /* When paused, hide play and show pause */
+        .ui-container.paused .icon-play {
+            display: none;
+        }
+        .ui-container.paused .icon-pause {
+            display: block;
+        }
+
+        /* --- 5. Falling Elements Animation --- */
+        .falling-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none; /* Allows clicks to go through */
+            transition: opacity 0.5s ease;
+        }
+
+        .falling-elements.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .leaf {
+            position: absolute;
+            top: -20px; /* Start off-screen */
+            width: 15px;
+            height: 15px;
+            background-color: rgba(255, 255, 255, 0.2); /* Ghostly white leaves */
+            border-radius: 0% 50% 0% 50%;
+            animation: fall linear infinite;
+        }
+
+        /* Keyframes for falling */
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(720deg); /* Fall and spin */
+                opacity: 0;
+            }
+        }
+
+        /* Create variations for a random effect */
+        .leaf:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
+        .leaf:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: -3s; }
+        .leaf:nth-child(3) { left: 25%; animation-duration: 18s; animation-delay: -7s; }
+        .leaf:nth-child(4) { left: 35%; animation-duration: 10s; animation-delay: -2s; }
+        .leaf:nth-child(5) { left: 45%; animation-duration: 16s; animation-delay: -10s; }
+        .leaf:nth-child(6) { left: 55%; animation-duration: 14s; animation-delay: -5s; }
+        .leaf:nth-child(7) { left: 65%; animation-duration: 13s; animation-delay: -8s; }
+        .leaf:nth-child(8) { left: 75%; animation-duration: 11s; animation-delay: -1s; }
+        .leaf:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: -12s; }
+        .leaf:nth-child(10) { left: 95%; animation-duration: 17s; animation-delay: -4s; }
+
+        /* --- 6. Settings Panel --- */
+        .settings-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            z-index: 100;
+            max-width: 350px;
+            color: #fff;
+        }
+
+        .settings-panel h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .settings-panel input,
+        .settings-panel button,
+        .settings-panel select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .settings-panel button {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-panel button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .settings-panel label {
+            display: block;
+            margin: 12px 0 5px 0;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .status-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .status-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+
+        .status-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid rgba(33, 150, 243, 0.5);
+        }
+
+        /* --- 7. YouTube Player (hidden) --- */
+        #youtube-player-container {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* --- 8. Keyboard navigation indicator --- */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            z-index: 50;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="ui-container" id="ui-container">
+
+        <!-- Hidden YouTube Player -->
+        <div id="youtube-player-container">
+            <div id="youtube-player"></div>
+        </div>
+
+        <div class="slideshow-background" id="slideshow">
+            <!-- Slides will be dynamically added here -->
+        </div>
+
+        <div class="falling-elements">
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+            <div class="leaf"></div>
+        </div>
+
+        <div class="content-overlay">
+            
+            <ul class="menu-list" id="menu">
+                <li data-slide="0">Internet</li>
+                <li data-slide="1">Schedule</li>
+                <li data-slide="2">Restaurants</li>
+                <li data-slide="3">Decibels</li>
+                <li data-slide="4">Coffees</li>
+                <li data-slide="5">Jobs</li>
+                <li data-slide="6">Cars</li>
+                <li data-slide="7">Emails</li>
+                <li data-slide="8">Parties</li>
+                <li data-slide="9">Nature</li>
+            </ul>
+
+            <div class="play-button" id="play-button">
+                <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+            </div>
+
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel">
+            <h3>🎵 Music & Visual Settings</h3>
+            
+            <label for="youtube-url">YouTube Music URL or Video ID:</label>
+            <input type="text" id="youtube-url" placeholder="e.g., dQw4w9WgXcQ or full URL">
+            <button id="load-youtube">Load Music</button>
+
+            <label for="pinterest-url">Pinterest Board URL (optional):</label>
+            <input type="text" id="pinterest-url" placeholder="e.g., https://pinterest.com/username/board/">
+            <button id="load-pinterest">Load Pinterest Images</button>
+
+            <label for="slide-interval">Slideshow Interval (seconds):</label>
+            <select id="slide-interval">
+                <option value="3">3 seconds</option>
+                <option value="5" selected>5 seconds</option>
+                <option value="8">8 seconds</option>
+                <option value="10">10 seconds</option>
+                <option value="15">15 seconds</option>
+            </select>
+
+            <div id="status-message" class="status-message" style="display: none;"></div>
+        </div>
+
+        <!-- Keyboard Hint -->
+        <div class="keyboard-hint">
+            ⌨️ Use ↑↓ arrow keys to navigate menu
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // MUSIC & VISUAL EXPERIENCE - Main Script
+        // ========================================
+
+        // Wait for the document to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Configuration ---
+            const config = {
+                defaultImages: [
+                    'Choose nature - Typography Poster.jpeg',
+                    'Screenshot (490).png'
+                ],
+                defaultSlideDuration: 5000,
+                youtubeVideoId: null,
+                pinterestImages: []
+            };
+
+            // --- Get all our HTML elements ---
+            const container = document.getElementById('ui-container');
+            const slideshowContainer = document.getElementById('slideshow');
+            const menuItems = document.querySelectorAll('.menu-list li');
+            const playButton = document.getElementById('play-button');
+            const fallingElements = document.querySelector('.falling-elements');
+            const youtubeUrlInput = document.getElementById('youtube-url');
+            const loadYoutubeBtn = document.getElementById('load-youtube');
+            const pinterestUrlInput = document.getElementById('pinterest-url');
+            const loadPinterestBtn = document.getElementById('load-pinterest');
+            const slideIntervalSelect = document.getElementById('slide-interval');
+            const statusMessage = document.getElementById('status-message');
+            
+            // --- Variables ---
+            let currentSlide = 0;
+            let isPlaying = true;
+            let slideInterval;
+            let slideDuration = config.defaultSlideDuration;
+            let player = null; // YouTube player instance
+            let slides = [];
+            let usingPinterest = false;
+            let youtubeAPIReady = false;
+
+            // ========================================
+            // YouTube IFrame API Integration
+            // ========================================
+            
+            // Load YouTube IFrame API
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            // YouTube API Ready Callback (global function required by YouTube API)
+            window.onYouTubeIframeAPIReady = function() {
+                console.log('YouTube IFrame API ready');
+                youtubeAPIReady = true;
+                showStatus('YouTube API loaded successfully!', 'success');
+            };
+
+            function loadYouTubeVideo(videoId) {
+                if (!youtubeAPIReady) {
+                    showStatus('YouTube API is still loading, please wait a moment...', 'info');
+                    // Retry after a delay
+                    setTimeout(() => {
+                        if (youtubeAPIReady) {
+                            loadYouTubeVideo(videoId);
+                        } else {
+                            showStatus('YouTube API failed to load. Please refresh the page.', 'error');
+                        }
+                    }, 2000);
+                    return;
+                }
+
+                if (player) {
+                    player.loadVideoById(videoId);
+                    showStatus('Music loaded successfully!', 'success');
+                } else {
+                    try {
+                        player = new YT.Player('youtube-player', {
+                            height: '1',
+                            width: '1',
+                            videoId: videoId,
+                            playerVars: {
+                                'autoplay': 0,
+                                'controls': 0,
+                                'disablekb': 1,
+                                'fs': 0,
+                                'modestbranding': 1,
+                                'playsinline': 1,
+                                'rel': 0
+                            },
+                            events: {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error creating YouTube player:', error);
+                        showStatus('Error loading YouTube player. Please try again.', 'error');
+                    }
+                }
+                config.youtubeVideoId = videoId;
+            }
+
+            function onPlayerReady(event) {
+                console.log('YouTube player ready');
+                showStatus('Music player ready! Click play to start.', 'success');
+            }
+
+            function onPlayerStateChange(event) {
+                if (event.data == YT.PlayerState.PLAYING) {
+                    container.classList.add('paused'); // Shows pause icon
+                    isPlaying = true;
+                    if (!slideInterval) {
+                        startSlideshow();
+                    }
+                } else if (event.data == YT.PlayerState.PAUSED) {
+                    container.classList.remove('paused'); // Shows play icon
+                    isPlaying = false;
+                } else if (event.data == YT.PlayerState.ENDED) {
+                    container.classList.remove('paused');
+                    isPlaying = false;
+                }
+            }
+
+            // ========================================
+            // Slideshow Management
+            // ========================================
+
+            function initializeSlides(images) {
+                slideshowContainer.innerHTML = '';
+                slides = [];
+                
+                images.forEach((imageSrc, index) => {
+                    const slideDiv = document.createElement('div');
+                    slideDiv.className = 'slide';
+                    slideDiv.style.backgroundImage = `url('${imageSrc}')`;
+                    slideshowContainer.appendChild(slideDiv);
+                    slides.push(slideDiv);
+                });
+
+                currentSlide = 0;
+                if (slides.length > 0) {
+                    slides[0].classList.add('active');
+                    if (menuItems[0]) {
+                        menuItems[0].classList.add('active');
+                    }
+                }
+            }
+
+            function showSlide(index) {
+                if (slides.length === 0) return;
+                
+                // Remove 'active' class from current slide and menu item
+                if (slides[currentSlide]) {
+                    slides[currentSlide].classList.remove('active');
+                }
+                if (menuItems[currentSlide]) {
+                    menuItems[currentSlide].classList.remove('active');
+                }
+                
+                // Update the currentSlide index
+                currentSlide = index % slides.length;
+                
+                // Add 'active' class to new slide and menu item
+                if (slides[currentSlide]) {
+                    slides[currentSlide].classList.add('active');
+                }
+                if (menuItems[currentSlide]) {
+                    menuItems[currentSlide].classList.add('active');
+                }
+            }
+
+            function nextSlide() {
+                const nextIndex = (currentSlide + 1) % slides.length;
+                showSlide(nextIndex);
+            }
+
+            function previousSlide() {
+                const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(prevIndex);
+            }
+
+            function startSlideshow() {
+                if (slideInterval) clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, slideDuration);
+                isPlaying = true;
+                container.classList.remove('paused');
+            }
+
+            function stopSlideshow() {
+                if (slideInterval) {
+                    clearInterval(slideInterval);
+                    slideInterval = null;
+                }
+                isPlaying = false;
+                container.classList.add('paused');
+            }
+
+            // ========================================
+            // Pinterest Integration (Mock/Demo)
+            // ========================================
+
+            function loadPinterestImages(boardUrl) {
+                // Note: Real Pinterest API requires OAuth authentication
+                // This is a demo implementation that shows how it would work
+                showStatus('Pinterest integration requires API authentication. Using local demo images instead.', 'info');
+                
+                // Use local images for demo - reference config for consistency
+                const demoImages = [...config.defaultImages];
+
+                config.pinterestImages = demoImages;
+                usingPinterest = true;
+                
+                // Hide falling leaves when using Pinterest
+                if (fallingElements) {
+                    fallingElements.classList.add('hidden');
+                }
+
+                initializeSlides(demoImages);
+                startSlideshow();
+                
+                setTimeout(() => {
+                    showStatus('Demo images loaded! Real Pinterest API would load board images here.', 'success');
+                }, 500);
+            }
+
+            // ========================================
+            // Keyboard Navigation
+            // ========================================
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    previousSlide();
+                    
+                    // Reset timer if playing
+                    if (isPlaying && slideInterval) {
+                        clearInterval(slideInterval);
+                        startSlideshow();
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    nextSlide();
+                    
+                    // Reset timer if playing
+                    if (isPlaying && slideInterval) {
+                        clearInterval(slideInterval);
+                        startSlideshow();
+                    }
+                }
+            });
+
+            // ========================================
+            // Event Listeners
+            // ========================================
+
+            // Play/Pause Button Click
+            playButton.addEventListener('click', () => {
+                if (player && config.youtubeVideoId && youtubeAPIReady) {
+                    // YouTube player exists
+                    try {
+                        const playerState = player.getPlayerState();
+                        if (playerState === YT.PlayerState.PLAYING || playerState === 1) {
+                            player.pauseVideo();
+                            stopSlideshow();
+                        } else {
+                            player.playVideo();
+                            startSlideshow();
+                        }
+                    } catch (error) {
+                        console.error('Error controlling YouTube player:', error);
+                        // Fallback to just slideshow control
+                        if (isPlaying) {
+                            stopSlideshow();
+                        } else {
+                            startSlideshow();
+                        }
+                    }
+                } else {
+                    // No YouTube player, just toggle slideshow
+                    if (isPlaying) {
+                        stopSlideshow();
+                    } else {
+                        startSlideshow();
+                    }
+                }
+            });
+
+            // Menu Item Clicks
+            menuItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    showSlide(index);
+                    
+                    // Reset timer if playing
+                    if (isPlaying && slideInterval) {
+                        clearInterval(slideInterval);
+                        startSlideshow();
+                    }
+                });
+            });
+
+            // YouTube Load Button
+            loadYoutubeBtn.addEventListener('click', () => {
+                const input = youtubeUrlInput.value.trim();
+                if (!input) {
+                    showStatus('Please enter a YouTube URL or Video ID', 'error');
+                    return;
+                }
+
+                // Use the extractVideoId function to handle URL parsing
+                const videoId = extractVideoId(input);
+                loadYouTubeVideo(videoId);
+            });
+
+            // Pinterest Load Button
+            loadPinterestBtn.addEventListener('click', () => {
+                const boardUrl = pinterestUrlInput.value.trim();
+                if (!boardUrl) {
+                    showStatus('Please enter a Pinterest board URL', 'error');
+                    return;
+                }
+                loadPinterestImages(boardUrl);
+            });
+
+            // Slide Interval Change
+            slideIntervalSelect.addEventListener('change', (e) => {
+                slideDuration = parseInt(e.target.value) * 1000;
+                if (isPlaying) {
+                    clearInterval(slideInterval);
+                    startSlideshow();
+                }
+                showStatus(`Slideshow interval set to ${e.target.value} seconds`, 'success');
+            });
+
+            // ========================================
+            // Helper Functions
+            // ========================================
+
+            function showStatus(message, type = 'info') {
+                statusMessage.textContent = message;
+                statusMessage.className = `status-message ${type}`;
+                statusMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 4000);
+            }
+
+            function extractVideoId(url) {
+                const patterns = [
+                    /(?:youtube\.com\/watch\?v=)([^&]+)/,
+                    /(?:youtu\.be\/)([^&]+)/,
+                    /(?:youtube\.com\/embed\/)([^&]+)/
+                ];
+                
+                for (const pattern of patterns) {
+                    const match = url.match(pattern);
+                    if (match) return match[1];
+                }
+                
+                return url; // Assume it's already a video ID
+            }
+
+            // ========================================
+            // Initialize
+            // ========================================
+
+            // Initialize with default images
+            initializeSlides(config.defaultImages);
+            showSlide(0);
+            startSlideshow();
+
+            // Show falling leaves by default (no Pinterest)
+            if (fallingElements) {
+                fallingElements.classList.remove('hidden');
+            }
+
+            console.log('Music & Visual Experience initialized!');
+        });
+    </script>
+</body>
+</html>
