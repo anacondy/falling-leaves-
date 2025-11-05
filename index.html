@@ -310,10 +310,15 @@
             height: 24px;
         }
 
+        /* Default state: playing, show pause icon */
         .play-button .icon-play {
             display: none;
         }
+        .play-button .icon-pause {
+            display: block;
+        }
 
+        /* Paused state: not playing, show play icon */
         .ui-container.paused .icon-play {
             display: block;
         }
@@ -752,10 +757,9 @@
             }
 
             function loadGooglePhotosImages(albumUrl) {
-                // Mock Google Photos implementation with metadata
-                console.log('Google Photos URL provided:', albumUrl);
-                console.log('Note: Full Google Photos API integration requires OAuth authentication.');
-                console.log('Currently displaying local images with Google Photos-style metadata.');
+                // Note: Full Google Photos API integration requires OAuth authentication
+                // Currently displaying local images with Google Photos-style metadata
+                console.log('Google Photos mode: Using local images with metadata simulation');
                 
                 imageData = config.defaultImages.map((img, index) => ({
                     url: img,
@@ -901,7 +905,6 @@
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
             window.onYouTubeIframeAPIReady = function() {
-                console.log('YouTube IFrame API ready');
                 youtubeAPIReady = true;
                 applySettings();
             };
@@ -944,7 +947,6 @@
             }
 
             function onPlayerReady(event) {
-                console.log('YouTube player ready, attempting to play');
                 try {
                     event.target.playVideo();
                 } catch (error) {
@@ -1025,8 +1027,6 @@
             }
             
             startSlideshow();
-            
-            console.log('Music & Visual Experience Enhanced initialized!');
         });
     </script>
 </body>
