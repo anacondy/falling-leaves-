@@ -29,97 +29,156 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
             z-index: 10000;
             display: none;
             align-items: center;
             justify-content: center;
+            animation: fadeIn 0.4s ease-out;
         }
 
         .auth-modal.active {
             display: flex;
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         .auth-content {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 40px;
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 30, 45, 0.95) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 100px rgba(100, 150, 200, 0.1);
+            border-radius: 20px;
+            padding: 50px 60px;
             text-align: center;
-            max-width: 400px;
+            max-width: 450px;
+            transform: scale(0.9);
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: scale(0.9) translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
         }
 
         .auth-content h2 {
-            margin: 0 0 20px 0;
-            font-size: 1.8rem;
-            font-weight: 300;
+            margin: 0 0 15px 0;
+            font-size: 2.2rem;
+            font-weight: 200;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ffffff 0%, #b0c4de 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .auth-content p {
-            margin: 0 0 30px 0;
-            opacity: 0.8;
-            font-size: 0.95rem;
+            margin: 0 0 40px 0;
+            opacity: 0.7;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
 
         .code-input-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 30px;
         }
 
         .code-digit {
-            width: 50px;
-            height: 60px;
-            font-size: 2rem;
+            width: 55px;
+            height: 65px;
+            font-size: 2.2rem;
             text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
             color: #fff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 300;
         }
 
         .code-digit:focus {
-            border-color: rgba(76, 175, 80, 0.7);
+            border-color: rgba(100, 180, 255, 0.8);
+            background: rgba(100, 180, 255, 0.1);
+            box-shadow: 0 0 20px rgba(100, 180, 255, 0.3);
             outline: none;
+            transform: scale(1.05);
         }
 
         .auth-buttons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .auth-buttons button {
-            padding: 12px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.15);
+            padding: 14px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .auth-buttons button:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
         .auth-buttons button.submit {
-            background: rgba(76, 175, 80, 0.3);
-            border-color: rgba(76, 175, 80, 0.5);
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.3) 0%, rgba(80, 160, 235, 0.3) 100%);
+            border-color: rgba(100, 180, 255, 0.5);
+        }
+
+        .auth-buttons button.submit:hover {
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.5) 0%, rgba(80, 160, 235, 0.5) 100%);
+            box-shadow: 0 6px 25px rgba(100, 180, 255, 0.4);
         }
 
         .auth-error {
-            color: #f44336;
-            margin-top: 15px;
-            font-size: 0.9rem;
+            color: #ff6b6b;
+            margin-top: 20px;
+            font-size: 0.95rem;
             display: none;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
         .auth-error.active {
             display: block;
+            animation: errorPulse 0.5s ease-out;
+        }
+
+        @keyframes errorPulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
         }
 
         /* --- 1. Slideshow Background --- */
@@ -139,7 +198,7 @@
             background-size: cover;
             background-position: center;
             opacity: 0;
-            transition: opacity 2.0s ease-in-out;
+            transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1);
             transform: scale(1.1);
             animation: kenburns 20s infinite;
         }
@@ -186,7 +245,7 @@
         .menu-container {
             position: relative;
             height: 60vh;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .menu-list {
@@ -205,6 +264,8 @@
             cursor: pointer;
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
             white-space: nowrap;
+            overflow: visible;
+            max-width: none;
         }
 
         .menu-list li.active {
@@ -249,15 +310,20 @@
             height: 24px;
         }
 
-        .play-button .icon-pause {
+        /* Default state: playing, show pause icon */
+        .play-button .icon-play {
             display: none;
+        }
+        .play-button .icon-pause {
+            display: block;
         }
 
+        /* Paused state: not playing, show play icon */
         .ui-container.paused .icon-play {
-            display: none;
+            display: block;
         }
         .ui-container.paused .icon-pause {
-            display: block;
+            display: none;
         }
 
         /* --- 5. Falling Elements Animation --- */
@@ -308,38 +374,9 @@
         .leaf:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: -12s; }
         .leaf:nth-child(10) { left: 95%; animation-duration: 17s; animation-delay: -4s; }
 
-        /* --- 6. Image Metadata Display --- */
+        /* --- 6. Image Metadata Display (Hidden) --- */
         .image-info {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            z-index: 50;
-            max-width: 300px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-        }
-
-        .image-info.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .image-info .title {
-            font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        .image-info .metadata {
-            opacity: 0.8;
-            font-size: 0.85rem;
-            line-height: 1.5;
+            display: none;
         }
 
         /* --- 7. YouTube Player (hidden) --- */
@@ -356,31 +393,174 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            opacity: 0.7;
+            background: transparent;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 12px;
+            border-radius: 0;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
             z-index: 50;
             transition: all 0.3s ease;
+            border: none;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .settings-hint:hover {
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.8);
+            color: rgba(255, 255, 255, 1);
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
         }
 
         .settings-hint.pressed {
-            background: rgba(76, 175, 80, 0.4);
-            border: 1px solid rgba(76, 175, 80, 0.6);
+            color: rgba(100, 255, 100, 1);
+            text-shadow: 0 0 10px rgba(100, 255, 100, 0.5);
         }
 
         /* Shake animation for error */
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
+            0%, 100% { transform: translateX(0) scale(1); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px) scale(1.01); }
+            20%, 40%, 60%, 80% { transform: translateX(8px) scale(1.01); }
+        }
+
+        /* --- Mobile Responsive Styles --- */
+        /* Smartphones - 16:9 and 20:9 aspect ratios */
+        @media only screen and (max-width: 768px) {
+            /* Optimize menu for mobile */
+            .menu-list li {
+                font-size: 1.5rem;
+                margin: 15px 0;
+            }
+
+            .menu-list li.active {
+                transform: scale(1.2) translateX(20px);
+            }
+
+            .menu-list li.adjacent {
+                transform: scale(1.05) translateX(10px);
+            }
+
+            .menu-container {
+                height: 50vh;
+            }
+
+            /* Optimize play button for touch */
+            .play-button {
+                width: 70px;
+                height: 70px;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .play-button .icon-play,
+            .play-button .icon-pause {
+                width: 28px;
+                height: 28px;
+            }
+
+            /* Settings hint smaller on mobile */
+            .settings-hint {
+                top: 10px;
+                right: 10px;
+                font-size: 0.65rem;
+                padding: 6px 10px;
+            }
+
+            /* Auth modal optimized for mobile */
+            .auth-content {
+                padding: 35px 30px;
+                max-width: 90%;
+                margin: 0 20px;
+            }
+
+            .auth-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .code-input-container {
+                gap: 8px;
+            }
+
+            .code-digit {
+                width: 45px;
+                height: 55px;
+                font-size: 1.8rem;
+            }
+
+            .auth-buttons button {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+
+            /* Optimize content overlay gradient for mobile */
+            .content-overlay {
+                padding: 0 8vw;
+                background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 70%);
+            }
+
+            /* Reduce falling elements on mobile for performance */
+            .leaf:nth-child(n+6) {
+                display: none;
+            }
+        }
+
+        /* Extra optimizations for tall mobile screens (20:9) */
+        @media only screen and (max-width: 768px) and (min-aspect-ratio: 9/20) {
+            .menu-container {
+                height: 45vh;
+            }
+
+            .play-button {
+                bottom: 40px;
+            }
+        }
+
+        /* Landscape mode on mobile */
+        @media only screen and (max-width: 768px) and (orientation: landscape) {
+            .menu-list li {
+                font-size: 1.2rem;
+                margin: 10px 0;
+            }
+
+            .menu-container {
+                height: 60vh;
+            }
+
+            .play-button {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+            }
+
+            .play-button .icon-play,
+            .play-button .icon-pause {
+                width: 20px;
+                height: 20px;
+            }
+
+            .auth-content {
+                padding: 25px 30px;
+            }
+
+            .code-digit {
+                width: 40px;
+                height: 50px;
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Smooth hardware acceleration for mobile */
+        @media only screen and (max-width: 768px) {
+            .slide,
+            .menu-list,
+            .menu-list li,
+            .play-button,
+            .auth-modal {
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+                will-change: transform, opacity;
+            }
         }
     </style>
 </head>
@@ -691,7 +871,10 @@
             }
 
             function loadGooglePhotosImages(albumUrl) {
-                // Mock Google Photos implementation with metadata
+                // Note: Full Google Photos API integration requires OAuth authentication
+                // Currently displaying local images with Google Photos-style metadata
+                console.log('Google Photos mode: Using local images with metadata simulation');
+                
                 imageData = config.defaultImages.map((img, index) => ({
                     url: img,
                     title: `Photo ${index + 1}`,
@@ -836,7 +1019,6 @@
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
             window.onYouTubeIframeAPIReady = function() {
-                console.log('YouTube IFrame API ready');
                 youtubeAPIReady = true;
                 applySettings();
             };
@@ -849,6 +1031,7 @@
 
                 if (player) {
                     player.loadVideoById(videoId);
+                    player.playVideo();
                 } else {
                     try {
                         player = new YT.Player('youtube-player', {
@@ -856,16 +1039,19 @@
                             width: '1',
                             videoId: videoId,
                             playerVars: {
-                                'autoplay': 0,
+                                'autoplay': 1,
                                 'controls': 0,
                                 'disablekb': 1,
                                 'fs': 0,
                                 'modestbranding': 1,
                                 'playsinline': 1,
-                                'rel': 0
+                                'rel': 0,
+                                'loop': 1,
+                                'playlist': videoId
                             },
                             events: {
-                                'onStateChange': onPlayerStateChange
+                                'onStateChange': onPlayerStateChange,
+                                'onReady': onPlayerReady
                             }
                         });
                     } catch (error) {
@@ -874,19 +1060,27 @@
                 }
             }
 
+            function onPlayerReady(event) {
+                try {
+                    event.target.playVideo();
+                } catch (error) {
+                    console.error('Error auto-playing:', error);
+                }
+            }
+
             function onPlayerStateChange(event) {
                 if (event.data == YT.PlayerState.PLAYING) {
-                    container.classList.add('paused');
+                    container.classList.remove('paused');
                     isPlaying = true;
                     if (!slideInterval) {
                         startSlideshow();
                     }
                 } else if (event.data == YT.PlayerState.PAUSED) {
-                    container.classList.remove('paused');
+                    container.classList.add('paused');
                     isPlaying = false;
                 } else if (event.data == YT.PlayerState.ENDED) {
-                    container.classList.remove('paused');
-                    isPlaying = false;
+                    // Loop the video if it ends
+                    player.playVideo();
                 }
             }
 
@@ -947,8 +1141,6 @@
             }
             
             startSlideshow();
-            
-            console.log('Music & Visual Experience Enhanced initialized!');
         });
     </script>
 </body>

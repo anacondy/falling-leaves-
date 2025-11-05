@@ -1,54 +1,58 @@
 # 🎵 Music & Visual Experience
 **SITE LINK:** https://anacondy.github.io/falling-leaves-/
 
-**Live Demo:** [https://github.com/anacondy/falling-leaves-](https://github.com/anacondy/falling-leaves-)
-
 An immersive audio-visual web application featuring YouTube music integration, dynamic background slideshows, authenticated settings page, customizable menu text, Google Photos & Pinterest integration, and beautiful falling leaves animation with enhanced dial/crown menu animations.
 
-![Main Interface](https://github.com/user-attachments/assets/8ccd63bd-b955-498a-b242-4d4db4352ebd)
+![Desktop Interface](https://github.com/user-attachments/assets/5461aedd-a060-40eb-ad46-918e0b981d8e)
 
 ## ✨ Features
 
 - 🔐 **Authenticated Settings Page** - Access via F+S key combination (2 sec hold) with 6-digit code
-- 🎵 **YouTube Music Integration** - Play background music from any YouTube video
+- 🎵 **YouTube Music Integration** - Play background music from any YouTube video with auto-loop
 - 🖼️ **Multiple Image Sources** - Choose between Local Images, Pinterest boards, or Google Photos albums
 - 📝 **Customizable Menu Text** - Edit all menu item labels in settings
 - 🎡 **Dial/Crown Menu Animation** - All menu items move together with smooth transitions
 - ⌨️ **Keyboard Navigation** - Use arrow keys (↑↓) to navigate through slides
 - 🎞️ **Dynamic Slideshow** - Configurable timing with smooth transitions
 - 🍃 **Falling Leaves Effect** - Ambient animation (auto-hides with external image sources)
-- 📊 **Image Metadata Display** - Shows filename, date, location, or comments based on source
+- 📱 **Mobile Optimized** - Fully responsive design for 16:9 and 20:9 smartphones
+- 🎨 **Frosted Glass Effects** - Subtle backdrop blur for modern aesthetic
 - 💾 **Settings Persistence** - All preferences saved in localStorage
 
 ## 📸 Screenshots
 
-### Main Interface with Dial/Crown Animation
-![Main View](https://github.com/user-attachments/assets/8ccd63bd-b955-498a-b242-4d4db4352ebd)
+### Desktop View
+![Desktop Interface](https://github.com/user-attachments/assets/5461aedd-a060-40eb-ad46-918e0b981d8e)
 
-*The enhanced dial/crown animation moves all menu items together when navigating. Active item scales up with glow effect, adjacent items also animate.*
+*Clean interface with frosted glass settings hint in top-right corner. Play/pause button shows correct icon based on playback state.*
 
-### Authentication Modal
-![Auth Modal](https://github.com/user-attachments/assets/9e24b5cd-f1f4-4b8e-9e4e-c772a47dbfad)
+### Mobile View (16:9 Aspect Ratio)
+![Mobile 16:9](https://github.com/user-attachments/assets/c64715e4-816f-4fc3-923b-9c3996fe4779)
 
-*Hold F+S keys for 2 seconds to trigger the 6-digit authentication modal (default code: 123456).*
+*Optimized for smartphones with touch-friendly controls and centered play/pause button.*
 
-### Settings Page - Music & Visual Settings
-![Settings Page](https://github.com/user-attachments/assets/382a31f5-4b54-49ac-8da5-8681d768a5d5)
+### Mobile View (20:9 Aspect Ratio)
+![Mobile 20:9](https://github.com/user-attachments/assets/891fc8c6-5eb1-4773-ba74-6cf030a439aa)
 
-*Configure YouTube music, slideshow interval, and choose image sources.*
+*Adapted layout for taller modern smartphones with adjusted menu height.*
 
-### Settings Page - Menu Customization
-![Menu Customization](https://github.com/user-attachments/assets/6f3d9e35-fec0-4056-b5dc-90be2883f921)
+### Authentication Modal (Mobile)
+![Auth Modal Mobile](https://github.com/user-attachments/assets/ce704d1e-b68d-4587-9d92-9645c826350d)
 
-*Edit all 10 menu item labels to customize your experience.*
+*Responsive authentication modal optimized for mobile with touch-friendly input fields.*
+
+### Authentication Modal (Desktop)
+![Auth Modal Desktop](https://github.com/user-attachments/assets/77b1ca17-3f74-4d22-b408-e705493d32ac)
+
+*Cinematic lighthouse-style authentication with gradient background and smooth animations.*
 
 ## 🚀 Quick Start
 
 1. Open `index.html` in a modern web browser
-2. Navigate using arrow keys (↑↓) or click menu items
+2. Navigate using arrow keys (↑↓) or click/tap menu items
 3. Hold F+S keys for 2 seconds to access settings (code: 123456)
 4. Configure YouTube music, image source, and menu labels
-5. Enjoy the immersive experience!
+5. Enjoy the immersive experience on any device!
 
 ### Settings Access
 - Press and hold **F** + **S** simultaneously for 2 seconds
@@ -71,14 +75,14 @@ See [music-visual-site.md](music-visual-site.md) for technical development guide
 ### Main Page
 - **Arrow Up (↑)** - Previous slide (with dial/crown animation)
 - **Arrow Down (↓)** - Next slide (with dial/crown animation)
-- **Menu Items** - Click to jump to specific slide
-- **Play/Pause Button** - Start/stop music and slideshow
+- **Menu Items** - Click/tap to jump to specific slide
+- **Play/Pause Button** - Start/stop music and slideshow (centered on mobile)
 - **F + S (hold 2 sec)** - Access settings page
 
 ### Settings Page
 - **Image Source Selection** - Choose Local/Pinterest/Google Photos
 - **Menu Text Editor** - Customize all 10 menu labels
-- **YouTube Music** - Configure background music
+- **YouTube Music** - Configure background music with auto-loop
 - **Slideshow Interval** - Adjust transition speed (3-15 seconds)
 - **Save/Reset Buttons** - Persist or restore defaults
 
@@ -86,10 +90,22 @@ See [music-visual-site.md](music-visual-site.md) for technical development guide
 
 - Pure vanilla JavaScript (no frameworks)
 - HTML5 & CSS3 with advanced animations
-- YouTube IFrame API
+- YouTube IFrame API with auto-loop support
 - Pinterest & Google Photos API ready (OAuth)
 - LocalStorage for settings persistence
 - Responsive design with glassmorphism UI
+- Mobile-first responsive design (16:9, 20:9 aspect ratios)
+- Hardware-accelerated animations for smooth mobile performance
+
+## 📱 Mobile Support
+
+Fully optimized for smartphones with:
+- Touch-friendly controls (70px play button on mobile)
+- Centered play/pause button for easy thumb access
+- Adaptive menu sizing for different screen heights
+- Reduced animations on mobile for better performance
+- Support for portrait and landscape orientations
+- Hardware acceleration for smooth rendering
 
 ## 📸 Screenshots
 
@@ -140,8 +156,9 @@ No build process required! Just:
 
 - ✅ Chrome/Edge (recommended)
 - ✅ Firefox
-- ✅ Safari
+- ✅ Safari (iOS 12+)
 - ✅ Modern mobile browsers
+- ✅ Optimized for 16:9 and 20:9 smartphone displays
 
 ## 📝 License
 
@@ -153,10 +170,12 @@ Contributions are welcome! Please maintain the vanilla JS approach and update do
 
 ## 👤 Author
 
-**anacondy**
+*"In the darkness of uncertainty, in the light of creativity, we find truth."*
+
+**Puppy pilot & anacondy**
 - GitHub: [@anacondy](https://github.com/anacondy)
 - Repository: [falling-leaves-](https://github.com/anacondy/falling-leaves-)
 
 ---
 
-Made with ❤️ and JavaScript by [@anacondy](https://github.com/anacondy)
+*Crafted with passion and pixels*
