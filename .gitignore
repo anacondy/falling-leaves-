@@ -41,3 +41,5 @@ coverage/
 
 # Browser Cache
 .cache/
+*.backup
+/tmp/

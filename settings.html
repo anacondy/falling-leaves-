@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Music & Visual Experience</title>
+    <style>
+        /* --- Base Setup --- */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            overflow-y: auto;
+        }
+
+        .settings-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin: 0 0 10px 0;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+        }
+
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .settings-section h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.5rem;
+            font-weight: 400;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        button {
+            padding: 12px 24px;
+            margin: 10px 5px 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        button.primary {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        button.primary:hover {
+            background: rgba(76, 175, 80, 0.4);
+        }
+
+        .menu-editor {
+            margin-top: 20px;
+        }
+
+        .menu-item-editor {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .menu-item-editor input {
+            flex: 1;
+            margin: 0 10px 0 0;
+        }
+
+        .menu-item-editor button {
+            margin: 0;
+            padding: 8px 16px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+
+        .status-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .status-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+
+        .status-message.info {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid rgba(33, 150, 243, 0.5);
+        }
+
+        .info-box {
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 3px solid rgba(33, 150, 243, 0.5);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="header">
+            <h1>⚙️ Settings</h1>
+            <p>Customize your Music & Visual Experience</p>
+        </div>
+
+        <!-- Music & Visual Settings -->
+        <div class="settings-section">
+            <h2>🎵 Music & Visual Settings</h2>
+            
+            <label for="youtube-url">YouTube Music URL or Video ID:</label>
+            <input type="text" id="youtube-url" placeholder="e.g., dQw4w9WgXcQ or full URL">
+            <button id="save-youtube" class="primary">Save YouTube Settings</button>
+
+            <label for="slide-interval">Slideshow Interval (seconds):</label>
+            <select id="slide-interval">
+                <option value="3">3 seconds</option>
+                <option value="5" selected>5 seconds</option>
+                <option value="8">8 seconds</option>
+                <option value="10">10 seconds</option>
+                <option value="15">15 seconds</option>
+            </select>
+
+            <div id="music-status" class="status-message"></div>
+        </div>
+
+        <!-- Image Source Settings -->
+        <div class="settings-section">
+            <h2>🖼️ Image Source Settings</h2>
+            
+            <div class="info-box">
+                Choose between Pinterest boards or Google Photos albums as your background image source.
+            </div>
+
+            <label for="image-source">Image Source:</label>
+            <select id="image-source">
+                <option value="local">Local Images</option>
+                <option value="pinterest">Pinterest Board</option>
+                <option value="google-photos">Google Photos Album</option>
+            </select>
+
+            <div id="pinterest-settings" style="display: none;">
+                <label for="pinterest-url">Pinterest Board URL:</label>
+                <input type="text" id="pinterest-url" placeholder="e.g., https://pinterest.com/username/board/">
+            </div>
+
+            <div id="google-photos-settings" style="display: none;">
+                <label for="google-photos-url">Google Photos Album Share Link:</label>
+                <input type="text" id="google-photos-url" placeholder="e.g., https://photos.app.goo.gl/...">
+                <div class="info-box">
+                    Google Photos will display metadata such as date, location, and comments when available.
+                </div>
+            </div>
+
+            <button id="save-image-source" class="primary">Save Image Source</button>
+            <div id="image-status" class="status-message"></div>
+        </div>
+
+        <!-- Menu Text Customization -->
+        <div class="settings-section">
+            <h2>📝 Menu Text Customization</h2>
+            
+            <div class="info-box">
+                Customize the text labels for each menu item. These will appear in the vertical menu on the main page.
+            </div>
+
+            <div class="menu-editor" id="menu-editor">
+                <!-- Menu items will be dynamically added here -->
+            </div>
+
+            <button id="save-menu-text" class="primary">Save Menu Text</button>
+            <button id="reset-menu-text">Reset to Defaults</button>
+            <div id="menu-status" class="status-message"></div>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Experience</a>
+    </div>
+
+    <script>
+        // Load settings from localStorage
+        function loadSettings() {
+            const settings = {
+                youtubeUrl: localStorage.getItem('youtubeUrl') || '',
+                slideInterval: localStorage.getItem('slideInterval') || '5',
+                imageSource: localStorage.getItem('imageSource') || 'local',
+                pinterestUrl: localStorage.getItem('pinterestUrl') || '',
+                googlePhotosUrl: localStorage.getItem('googlePhotosUrl') || '',
+                menuItems: JSON.parse(localStorage.getItem('menuItems')) || [
+                    'Internet', 'Schedule', 'Restaurants', 'Decibels', 'Coffees',
+                    'Jobs', 'Cars', 'Emails', 'Parties', 'Nature'
+                ]
+            };
+            return settings;
+        }
+
+        // Save settings to localStorage
+        function saveSettings(key, value) {
+            localStorage.setItem(key, typeof value === 'object' ? JSON.stringify(value) : value);
+        }
+
+        // Show status message
+        function showStatus(element, message, type = 'info') {
+            element.textContent = message;
+            element.className = `status-message ${type}`;
+            element.style.display = 'block';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 4000);
+        }
+
+        // Initialize settings page
+        document.addEventListener('DOMContentLoaded', () => {
+            const settings = loadSettings();
+            
+            // Load YouTube settings
+            document.getElementById('youtube-url').value = settings.youtubeUrl;
+            document.getElementById('slide-interval').value = settings.slideInterval;
+            
+            // Load image source settings
+            const imageSourceSelect = document.getElementById('image-source');
+            imageSourceSelect.value = settings.imageSource;
+            document.getElementById('pinterest-url').value = settings.pinterestUrl;
+            document.getElementById('google-photos-url').value = settings.googlePhotosUrl;
+            
+            // Show/hide image source fields
+            function updateImageSourceFields() {
+                const source = imageSourceSelect.value;
+                document.getElementById('pinterest-settings').style.display = 
+                    source === 'pinterest' ? 'block' : 'none';
+                document.getElementById('google-photos-settings').style.display = 
+                    source === 'google-photos' ? 'block' : 'none';
+            }
+            updateImageSourceFields();
+            imageSourceSelect.addEventListener('change', updateImageSourceFields);
+            
+            // Load menu items
+            const menuEditor = document.getElementById('menu-editor');
+            settings.menuItems.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'menu-item-editor';
+                div.innerHTML = `
+                    <input type="text" id="menu-item-${index}" value="${item}" placeholder="Menu Item ${index + 1}">
+                `;
+                menuEditor.appendChild(div);
+            });
+            
+            // Save YouTube settings
+            document.getElementById('save-youtube').addEventListener('click', () => {
+                const youtubeUrl = document.getElementById('youtube-url').value.trim();
+                const slideInterval = document.getElementById('slide-interval').value;
+                
+                saveSettings('youtubeUrl', youtubeUrl);
+                saveSettings('slideInterval', slideInterval);
+                
+                showStatus(
+                    document.getElementById('music-status'),
+                    'Music & Visual settings saved successfully!',
+                    'success'
+                );
+            });
+            
+            // Save image source settings
+            document.getElementById('save-image-source').addEventListener('click', () => {
+                const imageSource = imageSourceSelect.value;
+                const pinterestUrl = document.getElementById('pinterest-url').value.trim();
+                const googlePhotosUrl = document.getElementById('google-photos-url').value.trim();
+                
+                saveSettings('imageSource', imageSource);
+                saveSettings('pinterestUrl', pinterestUrl);
+                saveSettings('googlePhotosUrl', googlePhotosUrl);
+                
+                showStatus(
+                    document.getElementById('image-status'),
+                    'Image source settings saved successfully!',
+                    'success'
+                );
+            });
+            
+            // Save menu text
+            document.getElementById('save-menu-text').addEventListener('click', () => {
+                const menuItems = [];
+                for (let i = 0; i < settings.menuItems.length; i++) {
+                    const input = document.getElementById(`menu-item-${i}`);
+                    if (input) {
+                        menuItems.push(input.value.trim() || `Item ${i + 1}`);
+                    }
+                }
+                
+                saveSettings('menuItems', menuItems);
+                
+                showStatus(
+                    document.getElementById('menu-status'),
+                    'Menu text saved successfully!',
+                    'success'
+                );
+            });
+            
+            // Reset menu text
+            document.getElementById('reset-menu-text').addEventListener('click', () => {
+                const defaultItems = [
+                    'Internet', 'Schedule', 'Restaurants', 'Decibels', 'Coffees',
+                    'Jobs', 'Cars', 'Emails', 'Parties', 'Nature'
+                ];
+                
+                defaultItems.forEach((item, index) => {
+                    const input = document.getElementById(`menu-item-${index}`);
+                    if (input) {
+                        input.value = item;
+                    }
+                });
+                
+                saveSettings('menuItems', defaultItems);
+                
+                showStatus(
+                    document.getElementById('menu-status'),
+                    'Menu text reset to defaults!',
+                    'success'
+                );
+            });
+            
+            // Save slide interval on change
+            document.getElementById('slide-interval').addEventListener('change', (e) => {
+                saveSettings('slideInterval', e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
