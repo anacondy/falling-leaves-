@@ -374,38 +374,9 @@
         .leaf:nth-child(9) { left: 85%; animation-duration: 19s; animation-delay: -12s; }
         .leaf:nth-child(10) { left: 95%; animation-duration: 17s; animation-delay: -4s; }
 
-        /* --- 6. Image Metadata Display --- */
+        /* --- 6. Image Metadata Display (Hidden) --- */
         .image-info {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            z-index: 50;
-            max-width: 300px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-        }
-
-        .image-info.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .image-info .title {
-            font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        .image-info .metadata {
-            opacity: 0.8;
-            font-size: 0.85rem;
-            line-height: 1.5;
+            display: none;
         }
 
         /* --- 7. YouTube Player (hidden) --- */
@@ -422,24 +393,27 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            opacity: 0.7;
+            background: transparent;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 8px 12px;
+            border-radius: 0;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
             z-index: 50;
             transition: all 0.3s ease;
+            border: none;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .settings-hint:hover {
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.8);
+            color: rgba(255, 255, 255, 1);
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
         }
 
         .settings-hint.pressed {
-            background: rgba(76, 175, 80, 0.4);
-            border: 1px solid rgba(76, 175, 80, 0.6);
+            color: rgba(100, 255, 100, 1);
+            text-shadow: 0 0 10px rgba(100, 255, 100, 0.5);
         }
 
         /* Shake animation for error */
@@ -447,6 +421,146 @@
             0%, 100% { transform: translateX(0) scale(1); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-8px) scale(1.01); }
             20%, 40%, 60%, 80% { transform: translateX(8px) scale(1.01); }
+        }
+
+        /* --- Mobile Responsive Styles --- */
+        /* Smartphones - 16:9 and 20:9 aspect ratios */
+        @media only screen and (max-width: 768px) {
+            /* Optimize menu for mobile */
+            .menu-list li {
+                font-size: 1.5rem;
+                margin: 15px 0;
+            }
+
+            .menu-list li.active {
+                transform: scale(1.2) translateX(20px);
+            }
+
+            .menu-list li.adjacent {
+                transform: scale(1.05) translateX(10px);
+            }
+
+            .menu-container {
+                height: 50vh;
+            }
+
+            /* Optimize play button for touch */
+            .play-button {
+                width: 70px;
+                height: 70px;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .play-button .icon-play,
+            .play-button .icon-pause {
+                width: 28px;
+                height: 28px;
+            }
+
+            /* Settings hint smaller on mobile */
+            .settings-hint {
+                top: 10px;
+                right: 10px;
+                font-size: 0.65rem;
+                padding: 6px 10px;
+            }
+
+            /* Auth modal optimized for mobile */
+            .auth-content {
+                padding: 35px 30px;
+                max-width: 90%;
+                margin: 0 20px;
+            }
+
+            .auth-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .code-input-container {
+                gap: 8px;
+            }
+
+            .code-digit {
+                width: 45px;
+                height: 55px;
+                font-size: 1.8rem;
+            }
+
+            .auth-buttons button {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+
+            /* Optimize content overlay gradient for mobile */
+            .content-overlay {
+                padding: 0 8vw;
+                background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 70%);
+            }
+
+            /* Reduce falling elements on mobile for performance */
+            .leaf:nth-child(n+6) {
+                display: none;
+            }
+        }
+
+        /* Extra optimizations for tall mobile screens (20:9) */
+        @media only screen and (max-width: 768px) and (min-aspect-ratio: 9/20) {
+            .menu-container {
+                height: 45vh;
+            }
+
+            .play-button {
+                bottom: 40px;
+            }
+        }
+
+        /* Landscape mode on mobile */
+        @media only screen and (max-width: 768px) and (orientation: landscape) {
+            .menu-list li {
+                font-size: 1.2rem;
+                margin: 10px 0;
+            }
+
+            .menu-container {
+                height: 60vh;
+            }
+
+            .play-button {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+            }
+
+            .play-button .icon-play,
+            .play-button .icon-pause {
+                width: 20px;
+                height: 20px;
+            }
+
+            .auth-content {
+                padding: 25px 30px;
+            }
+
+            .code-digit {
+                width: 40px;
+                height: 50px;
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Smooth hardware acceleration for mobile */
+        @media only screen and (max-width: 768px) {
+            .slide,
+            .menu-list,
+            .menu-list li,
+            .play-button,
+            .auth-modal {
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+                will-change: transform, opacity;
+            }
         }
     </style>
 </head>
