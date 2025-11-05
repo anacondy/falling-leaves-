@@ -593,13 +593,8 @@
                 // This is a demo implementation that shows how it would work
                 showStatus('Pinterest integration requires API authentication. Using local demo images instead.', 'info');
                 
-                // Use local images for demo
-                const demoImages = [
-                    'Choose nature - Typography Poster.jpeg',
-                    'Screenshot (490).png',
-                    'Choose nature - Typography Poster.jpeg',
-                    'Screenshot (490).png'
-                ];
+                // Use local images for demo - reference config for consistency
+                const demoImages = [...config.defaultImages];
 
                 config.pinterestImages = demoImages;
                 usingPinterest = true;
@@ -700,13 +695,8 @@
                     return;
                 }
 
-                // Extract video ID from URL or use as-is
-                let videoId = input;
-                const urlMatch = input.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
-                if (urlMatch) {
-                    videoId = urlMatch[1];
-                }
-
+                // Use the extractVideoId function to handle URL parsing
+                const videoId = extractVideoId(input);
                 loadYouTubeVideo(videoId);
             });
 
