@@ -7,15 +7,16 @@ An immersive audio-visual web application featuring YouTube music integration, d
 
 ## ✨ Features
 
-- 🔐 **Authenticated Settings Page** - Access via F+S key combination (2 sec hold) with 6-digit code
+- 🔐 **Authenticated Settings Page** - One-tap access on mobile, or F+S key combination (2 sec hold) on desktop with 6-digit code
 - 🎵 **YouTube Music Integration** - Play background music from any YouTube video with auto-loop
 - 🖼️ **Multiple Image Sources** - Choose between Local Images, Pinterest boards, or Google Photos albums
+- 📱 **Mobile Image Positioning** - Select focal points for landscape images to control what's visible on portrait screens
 - 📝 **Customizable Menu Text** - Edit all menu item labels in settings
 - 🎡 **Dial/Crown Menu Animation** - All menu items move together with smooth transitions
 - ⌨️ **Keyboard Navigation** - Use arrow keys (↑↓) to navigate through slides
-- 🎞️ **Dynamic Slideshow** - Configurable timing with smooth transitions
+- 🎞️ **Dynamic Slideshow** - Configurable timing with smooth Ken Burns zoom on all images
 - 🍃 **Falling Leaves Effect** - Ambient animation (auto-hides with external image sources)
-- 📱 **Mobile Optimized** - Fully responsive design for 16:9 and 20:9 smartphones
+- 📱 **Mobile Optimized** - Fully responsive design for 16:9 and 20:9 smartphones with touch-friendly controls
 - 🎨 **Frosted Glass Effects** - Subtle backdrop blur for modern aesthetic
 - 💾 **Settings Persistence** - All preferences saved in localStorage
 
@@ -50,14 +51,16 @@ An immersive audio-visual web application featuring YouTube music integration, d
 
 1. Open `index.html` in a modern web browser
 2. Navigate using arrow keys (↑↓) or click/tap menu items
-3. Hold F+S keys for 2 seconds to access settings (code: 123456)
-4. Configure YouTube music, image source, and menu labels
-5. Enjoy the immersive experience on any device!
+3. Tap the **⚙️ Settings** button (mobile) or hold F+S keys for 2 seconds (desktop)
+4. Enter access code: **123456**
+5. Configure YouTube music, image source, focal points, and menu labels
+6. Enjoy the immersive experience on any device!
 
 ### Settings Access
-- Press and hold **F** + **S** simultaneously for 2 seconds
+- **Mobile:** Tap the **⚙️ Settings** button in top-right corner
+- **Desktop:** Press and hold **F** + **S** simultaneously for 2 seconds
 - Enter access code: **123456**
-- Access all customization options
+- Access all customization options including focal point positioning
 
 ## 📖 Documentation
 
@@ -76,11 +79,12 @@ See [music-visual-site.md](music-visual-site.md) for technical development guide
 - **Arrow Up (↑)** - Previous slide (with dial/crown animation)
 - **Arrow Down (↓)** - Next slide (with dial/crown animation)
 - **Menu Items** - Click/tap to jump to specific slide
-- **Play/Pause Button** - Start/stop music and slideshow (centered on mobile)
-- **F + S (hold 2 sec)** - Access settings page
+- **Play/Pause Button** - Start/stop music and slideshow (centered on mobile, fully visible)
+- **⚙️ Settings Button** - One tap on mobile to access settings (or F+S hold 2 sec on desktop)
 
 ### Settings Page
 - **Image Source Selection** - Choose Local/Pinterest/Google Photos
+- **Mobile Image Positioning** - Set focal points for each image (NEW)
 - **Menu Text Editor** - Customize all 10 menu labels
 - **YouTube Music** - Configure background music with auto-loop
 - **Slideshow Interval** - Adjust transition speed (3-15 seconds)
@@ -102,10 +106,42 @@ See [music-visual-site.md](music-visual-site.md) for technical development guide
 Fully optimized for smartphones with:
 - Touch-friendly controls (70px play button on mobile)
 - Centered play/pause button for easy thumb access
+- One-tap settings access (no keyboard shortcuts needed)
+- Image focal point selector for landscape images
 - Adaptive menu sizing for different screen heights
 - Reduced animations on mobile for better performance
 - Support for portrait and landscape orientations
 - Hardware acceleration for smooth rendering
+
+## 🧪 Testing & Improvements
+
+### Mobile UI Improvements (Before vs After)
+
+**Before - Mobile View Issues:**
+![Mobile Before](https://github.com/user-attachments/assets/ff1255fa-db1f-4960-8562-c40c5fa4e9e5)
+- Play/pause button partially cut off at bottom edge
+- Settings required 2-second keyboard hold (not mobile-friendly)
+- No control over image positioning for portrait screens
+
+**After - Mobile View Fixed:**
+![Mobile After](https://github.com/user-attachments/assets/a05a70b9-644a-4be2-a8f1-0fab6c4b5d40)
+- Play/pause button fully visible with proper spacing
+- Settings accessible with single tap on "⚙️ Settings" button
+- Clean, touch-optimized interface
+
+**Settings Page - Mobile Optimized:**
+![Settings Mobile](https://github.com/user-attachments/assets/5ea02a2d-d8d1-4b7c-b3f2-9a4a60772e3a)
+- Full-width buttons for easy tapping
+- Proper spacing for 16:9 and 20:9 screens
+- New focal point selector for mobile image positioning
+- Smooth scrolling with optimized layout
+
+### Key Fixes Applied:
+1. ✅ **Ken Burns Animation** - Fixed zoom effect to work on all 10+ images (was stopping after 3)
+2. ✅ **Mobile Play Button** - Increased bottom margin from 30px to 50px for full visibility
+3. ✅ **Settings Access** - Changed to single-tap button (was 2-second F+S hold)
+4. ✅ **Image Positioning** - Added focal point selector so users can choose important areas for mobile
+5. ✅ **Settings Layout** - Fully responsive for 16:9, 20:9, and landscape orientations
 
 ## 📸 Screenshots
 
