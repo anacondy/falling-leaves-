@@ -177,6 +177,188 @@
             border-radius: 4px;
             font-size: 0.9rem;
         }
+
+        /* Focal Point Selector */
+        .focal-point-container {
+            margin: 20px 0;
+        }
+
+        .focal-point-preview {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 16/9;
+            margin: 15px auto;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: crosshair;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .focal-point-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #4CAF50;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .focal-point-marker::before,
+        .focal-point-marker::after {
+            content: '';
+            position: absolute;
+            background: #4CAF50;
+        }
+
+        .focal-point-marker::before {
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+
+        .focal-point-marker::after {
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            transform: translateX(-50%);
+        }
+
+        .mobile-preview {
+            position: relative;
+            width: 180px;
+            height: 320px;
+            margin: 15px auto;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            overflow: hidden;
+            background-size: cover;
+        }
+
+        .preview-label {
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        /* Mobile Responsive Styles for 16:9 and 20:9 screens */
+        @media only screen and (max-width: 768px) {
+            body, html {
+                overflow-y: auto;
+            }
+
+            .settings-container {
+                margin: 20px auto;
+                padding: 20px 15px;
+                max-width: 100%;
+            }
+
+            .header {
+                margin-bottom: 25px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .settings-section {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+
+            .settings-section h2 {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            select,
+            textarea {
+                padding: 14px 12px;
+                font-size: 1rem;
+            }
+
+            button {
+                padding: 14px 20px;
+                font-size: 1rem;
+                width: 100%;
+                margin: 8px 0;
+            }
+
+            .menu-item-editor {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .menu-item-editor input {
+                margin: 0 0 8px 0;
+            }
+
+            .menu-item-editor button {
+                margin: 0;
+            }
+
+            .back-link {
+                display: block;
+                text-align: center;
+                margin: 25px 0;
+            }
+
+            .focal-point-preview {
+                max-width: 100%;
+                aspect-ratio: 16/9;
+            }
+
+            .info-box {
+                font-size: 0.85rem;
+                padding: 12px;
+            }
+        }
+
+        /* Extra optimizations for tall mobile screens (20:9) */
+        @media only screen and (max-width: 768px) and (min-aspect-ratio: 9/20) {
+            .settings-container {
+                padding: 25px 18px;
+            }
+
+            .settings-section {
+                padding: 25px 18px;
+            }
+        }
+
+        /* Landscape mode on mobile */
+        @media only screen and (max-width: 768px) and (orientation: landscape) {
+            .settings-container {
+                margin: 15px auto;
+                padding: 15px;
+            }
+
+            .settings-section {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            button {
+                padding: 10px 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -253,6 +435,34 @@
             <button id="save-menu-text" class="primary">Save Menu Text</button>
             <button id="reset-menu-text">Reset to Defaults</button>
             <div id="menu-status" class="status-message"></div>
+        </div>
+
+        <!-- Mobile Image Focal Point -->
+        <div class="settings-section">
+            <h2>📱 Mobile Image Positioning</h2>
+            
+            <div class="info-box">
+                Select the important part of your images that should be visible on mobile devices. Click on the preview to set the focal point.
+            </div>
+
+            <label for="image-select">Select Image to Configure:</label>
+            <select id="image-select">
+                <!-- Images will be dynamically added here -->
+            </select>
+
+            <div class="focal-point-container">
+                <div class="focal-point-preview" id="focal-point-preview">
+                    <div class="focal-point-marker" id="focal-point-marker"></div>
+                </div>
+                <div class="preview-label">Click to set focal point for mobile</div>
+
+                <div class="mobile-preview" id="mobile-preview"></div>
+                <div class="preview-label">Mobile Preview (9:16)</div>
+            </div>
+
+            <button id="save-focal-point" class="primary">Save Focal Point</button>
+            <button id="reset-focal-points">Reset All Focal Points</button>
+            <div id="focal-status" class="status-message"></div>
         </div>
 
         <a href="index.html" class="back-link">← Back to Experience</a>
@@ -405,6 +615,103 @@
             document.getElementById('slide-interval').addEventListener('change', (e) => {
                 saveSettings('slideInterval', e.target.value);
             });
+
+            // ========================================
+            // Focal Point Selector
+            // ========================================
+            
+            const defaultImages = [
+                '025bef26455d0dd81b480740debab6aa.jpg',
+                '04a84268a49d85a874ec201938bce376.jpg',
+                '2545264f538bc107dcfad382be919547.jpg',
+                '2da3e7f38347ce576dbc8cbe7dabf1f1.jpg',
+                '4259fe8da6b1b37794f619b950cdf7ee.jpg',
+                '6c00a43d018340664c03707e001d1c80.jpg',
+                '6f0014fc32a8a639363a5117c846322e.jpg',
+                '78a6dcf42161f1a006de7a2dedfdf14d.jpg',
+                '8670bbe9e9db0546ba2d05c636e0e3a7.jpg',
+                '9fe6ff79da3400899f07358e025752e6.jpg'
+            ];
+
+            const imageSelect = document.getElementById('image-select');
+            const focalPreview = document.getElementById('focal-point-preview');
+            const focalMarker = document.getElementById('focal-point-marker');
+            const mobilePreview = document.getElementById('mobile-preview');
+            
+            let currentImageIndex = 0;
+            let focalPoints = JSON.parse(localStorage.getItem('focalPoints')) || {};
+
+            // Populate image select dropdown
+            defaultImages.forEach((img, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `Image ${index + 1} (${img})`;
+                imageSelect.appendChild(option);
+            });
+
+            // Load and display current image
+            function loadImage(index) {
+                currentImageIndex = index;
+                const imgSrc = defaultImages[index];
+                focalPreview.style.backgroundImage = `url('${imgSrc}')`;
+                mobilePreview.style.backgroundImage = `url('${imgSrc}')`;
+                
+                // Load saved focal point or use center
+                const savedPoint = focalPoints[imgSrc] || { x: 50, y: 50 };
+                updateFocalPoint(savedPoint.x, savedPoint.y);
+            }
+
+            // Update focal point marker and mobile preview
+            function updateFocalPoint(percentX, percentY) {
+                focalMarker.style.left = percentX + '%';
+                focalMarker.style.top = percentY + '%';
+                
+                // Update mobile preview with focal point
+                mobilePreview.style.backgroundPosition = `${percentX}% ${percentY}%`;
+            }
+
+            // Handle click on preview to set focal point
+            focalPreview.addEventListener('click', (e) => {
+                const rect = focalPreview.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                
+                updateFocalPoint(x, y);
+                
+                // Save to temporary state (not localStorage yet)
+                const imgSrc = defaultImages[currentImageIndex];
+                focalPoints[imgSrc] = { x, y };
+            });
+
+            // Handle image selection change
+            imageSelect.addEventListener('change', (e) => {
+                loadImage(parseInt(e.target.value));
+            });
+
+            // Save focal point
+            document.getElementById('save-focal-point').addEventListener('click', () => {
+                saveSettings('focalPoints', focalPoints);
+                showStatus(
+                    document.getElementById('focal-status'),
+                    'Focal points saved successfully!',
+                    'success'
+                );
+            });
+
+            // Reset focal points
+            document.getElementById('reset-focal-points').addEventListener('click', () => {
+                focalPoints = {};
+                saveSettings('focalPoints', {});
+                loadImage(currentImageIndex);
+                showStatus(
+                    document.getElementById('focal-status'),
+                    'All focal points reset to center!',
+                    'success'
+                );
+            });
+
+            // Initialize first image
+            loadImage(0);
         });
     </script>
 </body>
